@@ -20,12 +20,27 @@ function setRandomHeroImage() {
 }
 
 /* ===================================== */
+/* NAV TOGGLE (MOBILE MENU) */
+/* ===================================== */
+
+function setupNavToggle() {
+  const toggle = document.getElementById("nav-toggle")
+  const nav = document.getElementById("nav")
+  if (!toggle || !nav) return
+  toggle.addEventListener("click", function () {
+    nav.classList.toggle("nav-open")
+    toggle.classList.toggle("nav-toggle-open")
+  })
+}
+
+/* ===================================== */
 /* START APP */
 /* ===================================== */
 
 startApp()
 
 function startApp() {
+  setupNavToggle()
   fetch("products/products.json")
     .then((res) => res.json())
     .then((data) => {
@@ -237,7 +252,7 @@ function loadCart() {
     })
     .join("")
 
-  totalDiv.innerHTML = `<h3>Total: ₹${total}</h3>`
+  if (totalDiv) totalDiv.innerHTML = `<h3>Total: ₹${total}</h3>`
 }
 
 function increaseQty(index) {

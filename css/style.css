@@ -25,7 +25,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Baloo 2', cursive;
+  font-family: 'Baloo 2', system-ui, -apple-system, sans-serif;
+  font-style: normal;
 }
 
 body {
@@ -33,6 +34,7 @@ body {
   color: var(--cream);
   overflow-x: hidden;
   min-height: 100vh;
+  font-style: normal;
 }
 
 /* ========== HEADER (mobile-first) ========== */
