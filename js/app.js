@@ -2,52 +2,41 @@
 /* GLOBAL STATE */
 /* ===================================== */
 
-let products = [];
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let products = []
+let cart = JSON.parse(localStorage.getItem("cart")) || []
 
 /* ===================================== */
 /* HERO IMAGES (HOME) */
 /* ===================================== */
 
-const HERO_IMAGES = [
-  "image_childhood/image_1.png",
-  "image_childhood/image_2.png",
-  "image_childhood/image_3.png",
-  "image_childhood/image_4.png",
-  "image_childhood/image_5.png",
-  "image_childhood/image_6.png",
-  "image_childhood/image_7.png",
-  "image_childhood/image_8.png",
-  "image_childhood/image_9.png",
-  "image_childhood/image_10.png"
-];
+const HERO_IMAGES = ["image_childhood/image_1.png", "image_childhood/image_2.png", "image_childhood/image_3.png", "image_childhood/image_4.png", "image_childhood/image_5.png", "image_childhood/image_6.png", "image_childhood/image_7.png", "image_childhood/image_8.png", "image_childhood/image_9.png", "image_childhood/image_10.png"]
 
 function setRandomHeroImage() {
-  const img = document.getElementById("hero-image");
-  if (!img || !HERO_IMAGES.length) return;
+  const img = document.getElementById("hero-image")
+  if (!img || !HERO_IMAGES.length) return
 
-  const index = Math.floor(Math.random() * HERO_IMAGES.length);
-  img.src = HERO_IMAGES[index];
+  const index = Math.floor(Math.random() * HERO_IMAGES.length)
+  img.src = HERO_IMAGES[index]
 }
 
 /* ===================================== */
 /* START APP */
 /* ===================================== */
 
-startApp();
+startApp()
 
 function startApp() {
   fetch("products/products.json")
-    .then(res => res.json())
-    .then(data => {
-      products = data.products || data;
-      console.log("Products loaded:", products);
-      updateCartBadge();
-      routePage();
+    .then((res) => res.json())
+    .then((data) => {
+      products = data.products || data
+      console.log("Products loaded:", products)
+      updateCartBadge()
+      routePage()
     })
-    .catch(err => {
-      console.error("Failed to load products:", err);
-    });
+    .catch((err) => {
+      console.error("Failed to load products:", err)
+    })
 }
 
 /* ===================================== */
@@ -55,24 +44,21 @@ function startApp() {
 /* ===================================== */
 
 function routePage() {
-  const path = window.location.pathname;
+  const path = window.location.pathname
 
-  console.log("Current Path:", path); // 🔥 debug
+  console.log("Current Path:", path) // 🔥 debug
 
   if (path.endsWith("shop.html") || path.endsWith("/shop")) {
-    loadShop();
-  } 
-  else if (path.endsWith("cart.html") || path.endsWith("/cart")) {
-    loadCart();
-    setupWhatsAppCheckout();
-  } 
-  else if (path.endsWith("product.html") || path.includes("product")) {
-    loadProductDetail();
-  } 
-  else {
+    loadShop()
+  } else if (path.endsWith("cart.html") || path.endsWith("/cart")) {
+    loadCart()
+    setupWhatsAppCheckout()
+  } else if (path.endsWith("product.html") || path.includes("product")) {
+    loadProductDetail()
+  } else {
     // default = homepage
-    console.log("Home page loaded");
-    setRandomHeroImage();
+    console.log("Home page loaded")
+    setRandomHeroImage()
   }
 }
 
@@ -81,11 +67,11 @@ function routePage() {
 /* ===================================== */
 
 function updateCartBadge() {
-  const badge = document.getElementById("cart-count");
-  if (!badge) return;
+  const badge = document.getElementById("cart-count")
+  if (!badge) return
 
-  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-  badge.textContent = totalQty;
+  const totalQty = cart.reduce((sum, item) => sum + item.qty, 0)
+  badge.textContent = totalQty
 }
 
 /* ===================================== */
@@ -93,15 +79,17 @@ function updateCartBadge() {
 /* ===================================== */
 
 function loadShop() {
-  const container = document.getElementById("product-list");
-  if (!container) return;
+  const container = document.getElementById("product-list")
+  if (!container) return
 
   if (!products.length) {
-    container.innerHTML = "<p>No products available.</p>";
-    return;
+    container.innerHTML = "<p>No products available.</p>"
+    return
   }
 
-  container.innerHTML = products.map(product => `
+  container.innerHTML = products
+    .map(
+      (product) => `
     <div class="product-card">
       <img src="${product.image}" 
            onclick="openLightbox('${product.image}')">
@@ -115,7 +103,9 @@ function loadShop() {
         </button>
       </div>
     </div>
-  `).join("");
+  `
+    )
+    .join("")
 }
 
 /* ===================================== */
@@ -123,20 +113,20 @@ function loadShop() {
 /* ===================================== */
 
 function openProduct(id) {
-  window.location.href = `product.html?id=${id}`;
+  window.location.href = `product.html?id=${id}`
 }
 
 function loadProductDetail() {
-  const container = document.getElementById("product-detail");
-  if (!container) return;
+  const container = document.getElementById("product-detail")
+  if (!container) return
 
-  const params = new URLSearchParams(window.location.search);
-  const id = parseInt(params.get("id"));
+  const params = new URLSearchParams(window.location.search)
+  const id = parseInt(params.get("id"))
 
-  const product = products.find(p => p.id === id);
+  const product = products.find((p) => p.id === id)
   if (!product) {
-    container.innerHTML = "<p>Product not found.</p>";
-    return;
+    container.innerHTML = "<p>Product not found.</p>"
+    return
   }
 
   container.innerHTML = `
@@ -151,7 +141,7 @@ function loadProductDetail() {
         </button>
       </div>
     </div>
-  `;
+  `
 }
 
 /* ===================================== */
@@ -159,38 +149,38 @@ function loadProductDetail() {
 /* ===================================== */
 
 function setupWhatsAppCheckout() {
-  const btn = document.getElementById("whatsapp-btn");
-  if (!btn) return;
+  const btn = document.getElementById("whatsapp-btn")
+  if (!btn) return
 
   btn.addEventListener("click", function () {
     if (!cart.length) {
-      alert("Your cart is empty!");
-      return;
+      alert("Your cart is empty!")
+      return
     }
 
-    let message = "Hello, I would like to order:\n\n";
-    let total = 0;
+    let message = "Hello, I would like to order:\n\n"
+    let total = 0
 
-    cart.forEach(item => {
-      const product = products.find(p => p.id === item.id);
-      if (!product) return;
+    cart.forEach((item) => {
+      const product = products.find((p) => p.id === item.id)
+      if (!product) return
 
-      const subtotal = product.price * item.qty;
-      total += subtotal;
+      const subtotal = product.price * item.qty
+      total += subtotal
 
-      message += `${product.name} × ${item.qty} - ₹${subtotal}\n`;
-    });
+      message += `${product.name} × ${item.qty} - ₹${subtotal}\n`
+    })
 
-    message += `\nTotal: ₹${total}`;
+    message += `\nTotal: ₹${total}`
 
-    const phone = "919876543210"; // 🔥 Replace with YOUR number (no +)
+    const phone = "919518284386" // 🔥 Replace with YOUR number (no +)
 
-    const encodedMessage = encodeURIComponent(message);
+    const encodedMessage = encodeURIComponent(message)
 
-    const whatsappURL = `https://wa.me/${phone}?text=${encodedMessage}`;
+    const whatsappURL = `https://wa.me/${phone}?text=${encodedMessage}`
 
-    window.location.href = whatsappURL;
-  });
+    window.location.href = whatsappURL
+  })
 }
 
 /* ===================================== */
@@ -198,39 +188,40 @@ function setupWhatsAppCheckout() {
 /* ===================================== */
 
 function addToCart(id) {
-  const existing = cart.find(item => item.id === id);
+  const existing = cart.find((item) => item.id === id)
 
   if (existing) {
-    existing.qty++;
+    existing.qty++
   } else {
-    cart.push({ id, qty: 1 });
+    cart.push({ id, qty: 1 })
   }
 
-  saveCart();
-  updateCartBadge();
-  showToast("Added to cart 🛒");
+  saveCart()
+  updateCartBadge()
+  showToast("Added to cart 🛒")
 }
 
 function saveCart() {
-  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("cart", JSON.stringify(cart))
 }
 
 function loadCart() {
-  const itemsDiv = document.getElementById("cart-items");
-  const totalDiv = document.getElementById("cart-total");
+  const itemsDiv = document.getElementById("cart-items")
+  const totalDiv = document.getElementById("cart-total")
 
-  if (!itemsDiv) return;
+  if (!itemsDiv) return
 
-  let total = 0;
+  let total = 0
 
-  itemsDiv.innerHTML = cart.map((item, index) => {
-    const product = products.find(p => p.id === item.id);
-    if (!product) return "";
+  itemsDiv.innerHTML = cart
+    .map((item, index) => {
+      const product = products.find((p) => p.id === item.id)
+      if (!product) return ""
 
-    const subtotal = product.price * item.qty;
-    total += subtotal;
+      const subtotal = product.price * item.qty
+      total += subtotal
 
-    return `
+      return `
       <div class="cart-item">
         <h3>${product.name}</h3>
         <p>₹${product.price}</p>
@@ -242,35 +233,36 @@ function loadCart() {
         <p>Subtotal: ₹${subtotal}</p>
         <button onclick="removeItem(${index})">Remove</button>
       </div>
-    `;
-  }).join("");
+    `
+    })
+    .join("")
 
-  totalDiv.innerHTML = `<h3>Total: ₹${total}</h3>`;
+  totalDiv.innerHTML = `<h3>Total: ₹${total}</h3>`
 }
 
 function increaseQty(index) {
-  cart[index].qty++;
-  saveCart();
-  updateCartBadge();
-  loadCart();
+  cart[index].qty++
+  saveCart()
+  updateCartBadge()
+  loadCart()
 }
 
 function decreaseQty(index) {
   if (cart[index].qty > 1) {
-    cart[index].qty--;
+    cart[index].qty--
   } else {
-    cart.splice(index, 1);
+    cart.splice(index, 1)
   }
-  saveCart();
-  updateCartBadge();
-  loadCart();
+  saveCart()
+  updateCartBadge()
+  loadCart()
 }
 
 function removeItem(index) {
-  cart.splice(index, 1);
-  saveCart();
-  updateCartBadge();
-  loadCart();
+  cart.splice(index, 1)
+  saveCart()
+  updateCartBadge()
+  loadCart()
 }
 
 /* ===================================== */
@@ -278,34 +270,33 @@ function removeItem(index) {
 /* ===================================== */
 
 function showToast(message) {
-  const toast = document.getElementById("toast");
-  if (!toast) return;
+  const toast = document.getElementById("toast")
+  if (!toast) return
 
-  toast.textContent = message;
-  toast.classList.add("show");
+  toast.textContent = message
+  toast.classList.add("show")
 
   setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2000);
+    toast.classList.remove("show")
+  }, 2000)
 }
-
 
 /* ===================================== */
 /* LIGHTBOX */
 /* ===================================== */
 
 function openLightbox(src) {
-  const lightbox = document.getElementById("lightbox");
-  const img = document.getElementById("lightbox-img");
-  if (!lightbox || !img) return;
+  const lightbox = document.getElementById("lightbox")
+  const img = document.getElementById("lightbox-img")
+  if (!lightbox || !img) return
 
-  img.src = src;
-  lightbox.style.display = "flex";
+  img.src = src
+  lightbox.style.display = "flex"
 }
 
 function closeLightbox() {
-  const lightbox = document.getElementById("lightbox");
+  const lightbox = document.getElementById("lightbox")
   if (lightbox) {
-    lightbox.style.display = "none";
+    lightbox.style.display = "none"
   }
 }
